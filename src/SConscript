@@ -1,0 +1,14 @@
+Import('env')
+
+env.genIncs(['CF3Dpml.inc.hpp','nLAnet.inc.hpp','nLAdat.inc.hpp'], 'genMxw3D.py')
+env.Depends('genMxw3D.py', 'ConeFold.py')
+env.genIncs('Update.inc.hpp', 'genUpd.py')
+
+env.StaticLibrary('materials.o','materials.cpp')
+env.StaticLibrary('signal.o','Signal.cpp')
+env.StaticLibrary('init.o','init.cpp')
+env.StaticLibrary('main.o','main.cpp')
+
+env.Append(SWIGFLAGS=['-python','-w389,511'], SHLIBPREFIX="")
+env.Depends('Maxwell.py',['Maxwell.i','nLAnet.hpp','nLAarr.hpp','nLAnuma.hpp','ChessFold.hpp','ActThr.hpp','SemArr.hpp'])
+env.SharedLibrary('_Maxwell.so', ['main.cpp', 'init.cpp', 'materials.cpp', 'Signal.cpp', 'Maxwell.i'], SWIGFLAGS=['-python', '-w389,454,511', '-c++'], SHLIBPREFIX="")
